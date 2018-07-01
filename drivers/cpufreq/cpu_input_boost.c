@@ -21,10 +21,9 @@
 #include <linux/slab.h>
 
 static unsigned int input_boost_freq = CONFIG_INPUT_BOOST_FREQ;
-static unsigned short input_boost_duration_ms = CONFIG_INPUT_BOOST_DURATION_MS;
-
 module_param(input_boost_freq, uint, 0644);
-module_param(input_boost_duration_ms, short, 0644);
+static  unsigned int input_boost_ms = CONFIG_INPUT_BOOST_DURATION_MS;
+module_param(input_boost_ms, uint, 0644);
 
 /* Available bits for boost_drv state */
 #define SCREEN_AWAKE		(1U << 0)
@@ -143,7 +142,7 @@ static void input_boost_worker(struct work_struct *work)
 	}
 
 	queue_delayed_work(b->wq, &b->input_unboost,
-		msecs_to_jiffies(input_boost_duration_ms));
+		msecs_to_jiffies(input_boost_ms));
 }
 
 static void input_unboost_worker(struct work_struct *work)
